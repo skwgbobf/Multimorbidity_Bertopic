@@ -1,0 +1,318 @@
+# Multimorbidity BERTopic Project - Git Ignore File
+
+# ========================================
+# Large Data Files (Use Git LFS)
+# ========================================
+*.pkl
+*.pickle
+*.csv
+*.h5
+*.hdf5
+*.parquet
+
+# BERTopic model directories (very large)
+my_topics_model_*/
+*_model_*/
+
+# ========================================
+# Jupyter Notebook
+# ========================================
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+.jupyter/
+*.ipynb_checkpoints
+
+# Jupyter Notebook temporary files
+.virtual_documents/
+
+# ========================================
+# Python
+# ========================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+.env/
+
+# ========================================
+# IDEs and Editors
+# ========================================
+# PyCharm
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+.*.sw?
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ========================================
+# Operating System Files
+# ========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ========================================
+# Data and Results (Privacy & Size)
+# ========================================
+# Raw data files
+data/
+raw_data/
+input_data/
+**/data/
+**/raw_data/
+
+# Processed data (too large for git)
+processed_data/
+intermediate_data/
+**/processed_data/
+
+# Results and outputs
+results/
+output/
+outputs/
+**/results/
+**/output/
+
+# Excel files with results (optional - remove if needed for publication)
+# Uncomment if you want to track Excel results
+# *.xlsx
+# *.xls
+
+# ========================================
+# Models and Embeddings
+# ========================================
+# Large model files
+*.bin
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.model
+*.joblib
+
+# Embedding files
+embeddings/
+**/embeddings/
+
+# ========================================
+# Logs and Temporary Files
+# ========================================
+# Log files
+*.log
+logs/
+**/logs/
+
+# Temporary files
+tmp/
+temp/
+**/tmp/
+**/temp/
+*.tmp
+*.temp
+
+# ========================================
+# Documentation Build Files
+# ========================================
+# Sphinx documentation
+docs/_build/
+docs/_static/
+docs/_templates/
+
+# MkDocs documentation
+site/
+
+# ========================================
+# Statistical Analysis
+# ========================================
+# R files (if using R for statistics)
+.Rhistory
+.RData
+.Rproj.user
+
+# SPSS files
+*.sav
+*.spo
+
+# ========================================
+# Database Files
+# ========================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ========================================
+# Compressed Archives
+# ========================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.bz2
+*.gz
+*.xz
+
+# ========================================
+# Configuration Files with Secrets
+# ========================================
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Configuration files that might contain credentials
+config.ini
+secrets.yml
+secrets.yaml
+credentials.json
+*.key
+*.pem
+
+# ========================================
+# Project-Specific
+# ========================================
+# Vocabulary files (if regenerated frequently)
+# vocab*.pickle
+
+# Checkpoints
+checkpoints/
+**/checkpoints/
+
+# Plots and figures (if regenerated)
+# figures/
+# plots/
+# **/figures/
+# **/plots/
+
+# Draft manuscripts (keep final versions)
+# drafts/
+# manuscript_draft*.docx
+
+# ========================================
+# Exception: Include These Files
+# ========================================
+# Force include important small files even if pattern matches above
+!README.md
+!USAGE_GUIDE.md
+!DIRECTORY_STRUCTURE.md
+!requirements.txt
+!.gitignore
+!LICENSE
+
+# Force include disease codes (small reference file)
+!disease_codes.xlsx
+
+# Force include topic results (small Excel files for publication)
+!topics_info_*.xlsx
+
+# ========================================
+# Notes
+# ========================================
+# 1. Large pickle files (*.pkl) should use Git LFS
+# 2. BERTopic models are excluded due to size (700MB+)
+# 3. Adjust as needed for your specific workflow
+# 4. Before publishing, review excluded files

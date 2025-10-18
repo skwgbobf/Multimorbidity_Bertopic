@@ -1,0 +1,2 @@
+model,c_v,c_uci,c_npmi,unique_words_ratio,avg_jaccard_distance,n_topics
+BERTopic_Female,0.5001806503210319,-0.07909329162998169,-0.015274284218694726,0.24736842105263157,0.755776748593543,19

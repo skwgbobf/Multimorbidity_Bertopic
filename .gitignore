@@ -309,6 +309,11 @@ checkpoints/
 # Force include topic results (small Excel files for publication)
 !topics_info_*.xlsx
 
+# Force include evaluation results (small CSV files for publication)
+!results/evaluation/
+!results/evaluation/*.csv
+!results/evaluation/*.md
+
 # ========================================
 # Notes
 # ========================================

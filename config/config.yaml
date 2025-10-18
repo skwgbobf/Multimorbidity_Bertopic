@@ -1,0 +1,61 @@
+# BERTopic Configuration for Multimorbidity Pattern Discovery
+# Extracted from: SIIF.MLM_BertTopic_all_100p 19year_over40_confirmed_option3_option2_dec07_dec13_gender_dec20_jan29.ipynb
+# Date: 2025-10-18
+
+bertopic:
+  # UMAP dimensionality reduction parameters
+  umap:
+    n_neighbors: 15
+    n_components: 5
+    min_dist: 0.0
+    metric: "cosine"
+    random_state: 42
+
+  # HDBSCAN clustering parameters
+  hdbscan:
+    min_cluster_size: 150
+    metric: "euclidean"
+    cluster_selection_method: "eom"
+    prediction_data: true
+
+  # Embedding model configuration
+  embedding_model: "all-MiniLM-L6-v2"
+
+  # BERTopic core parameters
+  min_topic_size: 10
+  top_n_words: 10
+  nr_topics: "auto"
+  calculate_probabilities: true
+
+  # ClassTfidfTransformer (using default parameters)
+  ctfidf:
+    reduce_frequent_words: true
+    bm25_weighting: false
+
+# Data configuration
+data:
+  min_age: 40
+  study_period: "2002-2021"
+  n_disease_codes: 103
+  gender_stratified: true
+  n_patients: 331811
+
+  # Data structure
+  data_file: "T20_BFC_BEHRT_group_data_BERTopic_over40_all.pkl"
+  document_column: "d2"  # List format: ['219', 'SEP', '219', 'SEP', '221', ...]
+  gender_column: "SEX"   # SEX=2: Female (177,690), SEX=1: Male (154,121)
+
+# Model versions
+models:
+  female_model: "my_topics_model_100pall_19y_over40_option1_female_dec20"
+  male_model: "my_topics_model_100pall_19y_over40_option1_male_dec20"
+
+# Evaluation metrics to calculate
+evaluation:
+  coherence_metrics:
+    - "c_v"
+    - "c_uci"
+    - "c_npmi"
+  diversity_metrics:
+    - "unique_words_ratio"
+    - "jaccard_distance"

@@ -1,0 +1,2 @@
+model,c_v,c_uci,c_npmi,unique_words_ratio,avg_jaccard_distance,n_topics
+BERTopic_Male,0.5029509497502362,-0.14754571482726758,-0.016866424297227543,0.265,0.7797698928992721,20

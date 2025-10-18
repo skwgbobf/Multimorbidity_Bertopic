@@ -169,11 +169,11 @@ processed_data/
 intermediate_data/
 **/processed_data/
 
-# Results and outputs
-results/
+# Results and outputs (but allow evaluation results - see exception below)
+results/*
+!results/evaluation/
 output/
 outputs/
-**/results/
 **/output/
 
 # Excel files with results (optional - remove if needed for publication)
@@ -291,6 +291,15 @@ SFI.BEHRT_datapreprocess_Aug19_over40_confirmed_nov29_Jan29.ipynb
 LICENSE
 PUBLICATION_CHECKLIST.md
 
+# Exclude parent directory BERTopic files (old analysis, not used in manuscript)
+1. Bertopic_over40/SIIF.MLM_BertTopic_all_100p 19year_over40_confirmed_option3_option2_dec07_dec13_gender_dec20_jan29.ipynb
+1. Bertopic_over40/topics_info_100p_over40_op1_female_dec20.xlsx
+1. Bertopic_over40/topics_info_100p_over40_op1_male_dec20.xlsx
+1. Bertopic_over40/topics_info_100p_over40_op1_male_dec20_2.xlsx
+
+# Exclude new/ subdirectory (drafts and alternative analyses)
+1. Bertopic_over40/new/
+
 # Plots and figures (if regenerated)
 # figures/
 # plots/
@@ -317,8 +326,11 @@ PUBLICATION_CHECKLIST.md
 # Force include disease codes (small reference file)
 !disease_codes.xlsx
 
-# Force include topic results (small Excel files for publication)
-!topics_info_*.xlsx
+# Force include Shared_BERtopic_over40 directory (manuscript-final analysis files)
+!1. Bertopic_over40/Shared_BERtopic_over40/
+!1. Bertopic_over40/Shared_BERtopic_over40/*.ipynb
+!1. Bertopic_over40/Shared_BERtopic_over40/*CTFIDF*.xlsx
+!1. Bertopic_over40/Shared_BERtopic_over40/Bertopic_over40_patientsID_aug23.xlsx
 
 # Force include evaluation results (small CSV files for publication)
 !results/evaluation/

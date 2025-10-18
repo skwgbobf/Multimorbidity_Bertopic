@@ -34,8 +34,12 @@ def load_topics_from_excel(excel_path: str, top_n_words: int = 10) -> List[List[
     """
     Extract topic words from BERTopic's saved Excel file
 
+    Supports two formats:
+    1. CTFIDF format: columns [Word, c-TF-IDF, Topic] - manuscript format
+    2. topics_info format: columns [Topic, Count, Name, Representation, ...] - legacy format
+
     Args:
-        excel_path: Path to topics_info Excel file
+        excel_path: Path to topics Excel file
         top_n_words: Number of top words to extract per topic
 
     Returns:
@@ -43,12 +47,29 @@ def load_topics_from_excel(excel_path: str, top_n_words: int = 10) -> List[List[
     """
     print(f"Loading topics from: {excel_path}")
 
-    # Load the topics_info Excel file
+    # Load the Excel file
     df = pd.read_excel(excel_path)
 
-    # The Excel file has columns: Topic, Count, Name, Representation, ...
-    # The Representation column contains the disease codes as strings like "['218', '220', ...]"
+    # Check format: CTFIDF format (manuscript) vs topics_info format (legacy)
+    if 'Word' in df.columns and 'c-TF-IDF' in df.columns and 'Topic' in df.columns:
+        print("Detected CTFIDF format (manuscript format)")
+        topics = []
 
+        # Group by Topic and get top words (already sorted by c-TF-IDF in descending order)
+        for topic_id in sorted(df['Topic'].unique()):
+            if topic_id == -1:  # Skip outlier topic if present
+                continue
+
+            # Get top N words for this topic (already ranked by c-TF-IDF)
+            topic_words = df[df['Topic'] == topic_id]['Word'].head(top_n_words).astype(str).tolist()
+            if topic_words:
+                topics.append(topic_words)
+
+        print(f"Extracted {len(topics)} topics from CTFIDF format")
+        return topics
+
+    # Legacy format: Topic, Count, Name, Representation, ...
+    print("Detected topics_info format (legacy format)")
     topics = []
 
     # Parse Representation column
@@ -218,11 +239,13 @@ def main():
     # Set paths relative to GIT directory
     base_dir = Path(__file__).parent.parent
 
-    # Excel file paths (saved topic information)
-    female_excel = base_dir / "1. Bertopic_over40" / "topics_info_100p_over40_op1_female_dec20.xlsx"
-    male_excel = base_dir / "1. Bertopic_over40" / "topics_info_100p_over40_op1_male_dec20.xlsx"
+    # Excel file paths - MANUSCRIPT VERSION (Shared directory, CTFIDF format)
+    female_excel = base_dir / "1. Bertopic_over40" / "Shared_BERtopic_over40" / "100pall_19y_over40_option1_female_dec20_CTFIDF_aug23.xlsx"
+    male_excel = base_dir / "1. Bertopic_over40" / "Shared_BERtopic_over40" / "100pall_19y_over40_option1_male_dec20_CTFIDF_aug23.xlsx"
 
-    # Data path
+    # Data path - using full dataset (manuscript used 168,529 subset from this)
+    # Note: The Shared directory has a pickle file (over40_mutimorbidity_target_df2_multi_dec01.pkl)
+    # but it may have compatibility issues. Using full dataset for evaluation.
     data_path = base_dir / "T20_BFC_BEHRT_group_data_BERTopic_over40_all.pkl"
 
     # Results directory

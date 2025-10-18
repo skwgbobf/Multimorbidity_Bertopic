@@ -282,6 +282,15 @@ credentials.json
 checkpoints/
 **/checkpoints/
 
+# Specific preprocessing notebooks to exclude (contain sensitive intermediate data or outdated versions)
+S1F.BEHRT_datapreprocess_Aug19_over40_confirmed_nov16_jan29.ipynb
+SI.BEHRT_datapreprocess_Aug09_all_age_confirmed_nov16_dec07_jan29.ipynb
+SFI.BEHRT_datapreprocess_Aug19_over40_confirmed_nov29_Jan29.ipynb
+
+# Exclude LICENSE and PUBLICATION_CHECKLIST files
+LICENSE
+PUBLICATION_CHECKLIST.md
+
 # Plots and figures (if regenerated)
 # figures/
 # plots/
@@ -301,7 +310,9 @@ checkpoints/
 !DIRECTORY_STRUCTURE.md
 !requirements.txt
 !.gitignore
-!LICENSE
+
+# Force include the October 2025 updated preprocessing notebook
+!SFI.BEHRT_datapreprocess_Aug19_over40_confirmed_nov29_Jan29_oct2025.ipynb
 
 # Force include disease codes (small reference file)
 !disease_codes.xlsx

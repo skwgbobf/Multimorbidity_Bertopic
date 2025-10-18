@@ -11,10 +11,13 @@ This research focuses on:
 - **Time Period**: 2002-2021 (19 years)
 - **Methods**: BEHRT data preprocessing and BERTopic topic modeling
 - **Analysis**: Gender-stratified multimorbidity pattern discovery
-- **Total Patients**: 331,811 patients over age 40
+- **Manuscript Cohort**: 168,529 patients over age 40 with ≥6 years healthcare history
 - **Sample Distribution**:
-  - Male: 154,121 patients (46.4%)
-  - Female: 177,690 patients (53.6%)
+  - Male: 73,157 patients (43.4%)
+  - Female: 95,372 patients (56.6%)
+- **Topics Discovered**:
+  - Female: 19 distinct multimorbidity patterns
+  - Male: 20 distinct multimorbidity patterns
 
 ## Key Features
 
@@ -32,12 +35,19 @@ This research focuses on:
 3. **BERTopic Modeling**
    - Gender-stratified topic modeling (male/female)
    - Multimorbidity pattern discovery
-   - Topic information extraction and analysis
+   - Topic information extraction with c-TF-IDF weights
+   - 19 female topics + 20 male topics (manuscript-final)
 
-4. **Data Products**
+4. **Model Evaluation**
+   - Coherence metrics (C_v, C_uci, C_npmi)
+   - Diversity metrics (unique words ratio, Jaccard distance)
+   - Quality validation: C_v ~0.50 (GOOD), Jaccard ~0.76-0.78
+
+5. **Data Products**
    - Preprocessed datasets in pickle format
-   - Trained BERTopic models
-   - Topic analysis results in Excel format
+   - Topic analysis results in CTFIDF Excel format
+   - Patient demographics (non-PHI)
+   - Evaluation metrics and reports
 
 ## Repository Structure
 
@@ -66,14 +76,23 @@ GIT/
 │   └── SI.BEHRT_datapreprocess_Aug09_all_age_confirmed_nov16_dec07_jan29.ipynb
 │       └── Preprocessing for all ages (reference)
 │
+├── scripts/
+│   └── evaluate_from_excel.py          # Topic evaluation (coherence & diversity metrics)
+│
+├── results/
+│   └── evaluation/
+│       ├── EVALUATION_RESULTS_SUMMARY.md        # Complete evaluation report
+│       ├── coherence_female.csv                 # Female model metrics
+│       ├── coherence_male.csv                   # Male model metrics
+│       └── model_evaluation_summary.csv         # Combined results
+│
 └── 1. Bertopic_over40/
-    ├── SIIF.MLM_BertTopic_all_100p 19year_over40_confirmed_option3_option2_dec07_dec13_gender_dec20_jan29.ipynb
-    │   └── BERTopic analysis with gender stratification
-    ├── my_topics_model_100pall_19y_over40_option1_male_dec20      # Male BERTopic model (722 MB)
-    ├── my_topics_model_100pall_19y_over40_option1_female_dec20    # Female BERTopic model (725 MB)
-    ├── topics_info_100p_over40_op1_male_dec20.xlsx                # Male topic results
-    ├── topics_info_100p_over40_op1_male_dec20_2.xlsx              # Male topic results (alt)
-    └── topics_info_100p_over40_op1_female_dec20.xlsx              # Female topic results
+    └── Shared_BERtopic_over40/         # ✅ MANUSCRIPT-FINAL ANALYSIS
+        ├── Final_SIIF.MLM_BertTopic_all_100p 19year_over40_confirmed_option3_option2_dec07_dec13_gender_feb21_shared_afterre_july29F_Aug23.ipynb
+        │   └── BERTopic analysis with gender stratification (manuscript version)
+        ├── 100pall_19y_over40_option1_female_dec20_CTFIDF_aug23.xlsx  # Female: 19 topics
+        ├── 100pall_19y_over40_option1_male_dec20_CTFIDF_aug23.xlsx    # Male: 20 topics
+        └── Bertopic_over40_patientsID_aug23.xlsx                      # 168,529 patients
 ```
 
 ## Data Files Description
@@ -97,9 +116,12 @@ GIT/
   - Masked Language Model training data (Option 2: 50% split)
   - Patients with ID ending in 1, 3, 5, 7, 9
 
-### Output Data
-- **BERTopic Models**: Trained models for male and female populations
-- **Topic Information**: Excel files containing discovered multimorbidity patterns
+### Output Data (Manuscript-Final)
+- **Topic Results (CTFIDF Format)**:
+  - `100pall_19y_over40_option1_female_dec20_CTFIDF_aug23.xlsx`: 19 topics × 10 words with c-TF-IDF weights
+  - `100pall_19y_over40_option1_male_dec20_CTFIDF_aug23.xlsx`: 20 topics × 10 words with c-TF-IDF weights
+- **Patient Demographics**: `Bertopic_over40_patientsID_aug23.xlsx` (168,529 patients, non-PHI)
+- **Evaluation Metrics**: Coherence and diversity scores in `results/evaluation/`
 
 ## Installation
 
@@ -138,15 +160,25 @@ pip install -r requirements.txt
    - Creates temporal sequences
    - Exports preprocessed pickle files
 
-2. **BERTopic Analysis**:
+2. **BERTopic Analysis** (Manuscript Version):
    ```bash
-   jupyter notebook "1. Bertopic_over40/SIIF.MLM_BertTopic_all_100p 19year_over40_confirmed_option3_option2_dec07_dec13_gender_dec20_jan29.ipynb"
+   jupyter notebook "1. Bertopic_over40/Shared_BERtopic_over40/Final_SIIF.MLM_BertTopic_all_100p 19year_over40_confirmed_option3_option2_dec07_dec13_gender_feb21_shared_afterre_july29F_Aug23.ipynb"
    ```
    This notebook:
-   - Loads preprocessed data
+   - Loads preprocessed data (168,529 patients)
    - Performs gender-stratified BERTopic modeling
-   - Generates topic analysis results
-   - Exports models and Excel reports
+   - Generates 19 female + 20 male topics
+   - Exports CTFIDF results with c-TF-IDF weights
+
+3. **Model Evaluation**:
+   ```bash
+   python scripts/evaluate_from_excel.py
+   ```
+   This script:
+   - Loads CTFIDF topic results
+   - Calculates coherence metrics (C_v, C_uci, C_npmi)
+   - Calculates diversity metrics
+   - Exports evaluation reports to `results/evaluation/`
 
 ### Detailed Workflow
 
@@ -193,32 +225,56 @@ See [USAGE_GUIDE.md](USAGE_GUIDE.md) for detailed step-by-step instructions.
 
 ## Results
 
-### Patient Demographics (Over 40)
-- **Total Patients**: 331,811
-- **Age Groups**:
-  - 40-64 years: 239,561 patients (72.2%)
-  - 65+ years: 92,250 patients (27.8%)
+### Manuscript Cohort (168,529 Patients, ≥6 years healthcare history)
+- **Total Patients**: 168,529
 - **Gender Distribution**:
-  - Male 40-64: 116,079 patients
-  - Male 65+: 38,042 patients
-  - Female 40-64: 123,482 patients
-  - Female 65+: 54,208 patients
+  - Male: 73,157 patients (43.4%)
+  - Female: 95,372 patients (56.6%)
+- **Age Range**: 40-90 years
+  - Mean age at baseline: 55.9 years (SD: 9.9)
+  - Mean age at analysis: 58.5 years (SD: 9.7)
 
-### Output Files
-- Gender-specific BERTopic models (male/female)
-- Topic information spreadsheets with multimorbidity patterns
-- Statistical analysis of age and gender distributions
+### Topic Discovery Results
+**Female Model (19 Topics):**
+- C_v coherence: 0.500 (GOOD quality)
+- Jaccard distance: 0.756 (well-separated topics)
+- Topic format: CTFIDF with c-TF-IDF weights
+
+**Male Model (20 Topics):**
+- C_v coherence: 0.503 (GOOD quality)
+- Jaccard distance: 0.780 (well-separated topics)
+- Topic format: CTFIDF with c-TF-IDF weights
+
+### Output Files (Manuscript-Final)
+- Gender-specific topic results in CTFIDF format (Excel)
+- Patient demographics (non-PHI, Excel)
+- Evaluation metrics and comprehensive reports (CSV + Markdown)
+- See `results/evaluation/EVALUATION_RESULTS_SUMMARY.md` for details
+
+## Data and Code Availability
+
+All analysis code, topic results, and evaluation metrics are publicly available in this repository:
+
+**Key Files:**
+- Analysis Notebook: `1. Bertopic_over40/Shared_BERtopic_over40/Final_SIIF...Aug23.ipynb`
+- Female Topics: `1. Bertopic_over40/Shared_BERtopic_over40/100pall_19y_over40_option1_female_dec20_CTFIDF_aug23.xlsx` (19 topics)
+- Male Topics: `1. Bertopic_over40/Shared_BERtopic_over40/100pall_19y_over40_option1_male_dec20_CTFIDF_aug23.xlsx` (20 topics)
+- Patient Demographics: `1. Bertopic_over40/Shared_BERtopic_over40/Bertopic_over40_patientsID_aug23.xlsx` (168,529 patients, non-PHI)
+- Evaluation Results: `results/evaluation/` (coherence and diversity metrics)
+
+**Note:** Individual patient-level health records cannot be shared due to privacy regulations.
 
 ## Citation
 
-If you use this code or data in your research, please cite:
+If you use this code or analysis in your research, please cite:
 
 ```bibtex
-@article{multimorbidity_bertopic_2024,
+@article{multimorbidity_bertopic_2025,
   title={Multimorbidity Pattern Discovery using BERTopic in Patients Aged 40 and Above},
   author={[Your Name]},
   journal={[Journal Name]},
-  year={2024}
+  year={2025},
+  note={Code and analysis available at: https://github.com/skwgbobf/Multimorbidity_Bertopic}
 }
 ```
 
@@ -240,17 +296,21 @@ For questions or collaborations, please contact:
 
 ## Version History
 
-- **v1.0.0** (2024): Initial release
+- **v1.0.0** (2025-10-18): Manuscript-final release
   - BEHRT preprocessing pipeline for over-40 patients
-  - Gender-stratified BERTopic analysis
+  - Gender-stratified BERTopic analysis (19 female + 20 male topics)
   - 19-year longitudinal data (2002-2021)
+  - CTFIDF format topic results with c-TF-IDF weights
+  - Comprehensive evaluation metrics (coherence & diversity)
+  - 168,529 patients with ≥6 years healthcare history
 
 ## Known Issues and Limitations
 
-1. **Data Privacy**: All patient IDs are anonymized. Ensure compliance with data privacy regulations.
-2. **Large Files**: Model files are large (>700MB each). Git LFS is recommended.
+1. **Data Privacy**: All patient IDs are anonymized. Individual patient health records cannot be shared due to privacy regulations.
+2. **Trained Models Not Included**: BERTopic model files are excluded from repository due to size (>700MB each). Topic results (CTFIDF format) and evaluation metrics are provided instead.
 3. **Computational Requirements**: BERTopic modeling requires significant RAM (16GB+ recommended).
 4. **Washout Periods**: Disease-specific washout periods (5 years for cancers) are applied.
+5. **Cohort Selection**: Final manuscript cohort (168,529 patients) represents patients with ≥6 years of healthcare history, a subset of the full 331,811 over-40 population.
 
 ## Contributing
 
